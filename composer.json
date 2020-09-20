@@ -1,0 +1,20 @@
+{
+  "name": "mmdm/sim-file",
+  "description": "A simple yet nice file management library",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "MMDM",
+      "email": "mmdehghan95@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Sim\\File\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.2"
+  }
+}
