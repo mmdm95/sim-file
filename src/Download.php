@@ -5,6 +5,7 @@ namespace Sim\File;
 use RuntimeException;
 use Sim\File\Exceptions\DownloadException;
 use Sim\File\Interfaces\IDownload;
+use Sim\File\Interfaces\IFileException;
 use Sim\File\Utils\MimeTypeUtil;
 use Sim\File\Utils\PathUtil;
 use Sim\File\Utils\SizeUtil;
@@ -44,7 +45,7 @@ class Download implements IDownload
     /**
      * Download constructor.
      * @param string $path
-     * @throws DownloadException
+     * @throws IFileException
      */
     public function __construct(string $path)
     {
@@ -184,7 +185,7 @@ class Download implements IDownload
 
     /**
      * {@inheritdoc}
-     * @throws DownloadException
+     * @throws IFileException
      */
     public static function makeDownloadFromPath(string $path): IDownload
     {
