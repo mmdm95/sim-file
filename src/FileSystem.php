@@ -510,7 +510,7 @@ class FileSystem implements IFileSystem
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName(): string
     {
@@ -518,8 +518,7 @@ class FileSystem implements IFileSystem
     }
 
     /**
-     * @param string $filename
-     * @return string
+     * {@inheritdoc}
      */
     public static function getFileName(string $filename): string
     {
@@ -528,7 +527,7 @@ class FileSystem implements IFileSystem
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getBasename(): string
     {
@@ -536,8 +535,7 @@ class FileSystem implements IFileSystem
     }
 
     /**
-     * @param string $filename
-     * @return string
+     * {@inheritdoc}
      */
     public static function getFileBasename(string $filename): string
     {
