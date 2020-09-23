@@ -2,7 +2,7 @@
 
 namespace Sim\File\Interfaces;
 
-interface IFileSystemException
+interface IFileException
 {
 
 }

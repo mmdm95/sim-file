@@ -3,9 +3,9 @@
 namespace Sim\File\Exceptions;
 
 use Exception;
-use Sim\File\Interfaces\IFileSystemException;
+use Sim\File\Interfaces\IFileException;
 
-class DownloadException extends Exception implements IFileSystemException
+class DownloadException extends Exception implements IFileException
 {
 
 }
