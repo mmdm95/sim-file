@@ -228,6 +228,8 @@ Set error as a specific error in errors list.
 
 Check if any error is set.
 
+---
+
 ### FileSystem
 
 You can use all methods in both normal instantiable way or 
