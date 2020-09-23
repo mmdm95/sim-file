@@ -132,9 +132,22 @@ class FileUpload extends SplFileInfo
      * @param string $error
      * @return static
      */
-    public function setError(string $error)
+    public function addError(string $error)
     {
         $this->errors[] = $error;
+        return $this;
+    }
+
+    /**
+     * @param string|int $key
+     * @param string $error
+     * @return static
+     */
+    public function setError($key, string $error)
+    {
+        if (is_string($key) || is_numeric($key)) {
+            $this->errors[$key] = $error;
+        }
         return $this;
     }
 

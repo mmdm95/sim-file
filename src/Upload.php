@@ -32,6 +32,8 @@ class Upload implements IUpload
         $this->file = $file;
         if (!is_null($new_name)) {
             $this->setName($new_name);
+        } else {
+            $this->setName($file->getOriginalName());
         }
     }
 
