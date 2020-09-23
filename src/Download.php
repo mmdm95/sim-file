@@ -184,6 +184,7 @@ class Download implements IDownload
 
     /**
      * {@inheritdoc}
+     * @throws DownloadException
      */
     public static function makeDownloadFromPath(string $path)
     {
