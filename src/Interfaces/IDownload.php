@@ -22,9 +22,9 @@ interface IDownload
     public function setName(string $name);
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getName(): ?string;
+    public function getName(): string;
 
     /**
      * @param string $extension
@@ -49,9 +49,9 @@ interface IDownload
     public function setMimeType(string $mime_type);
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getMimeType(): ?string;
+    public function getMimeType(): string;
 
     /**
      * @return int
@@ -67,5 +67,5 @@ interface IDownload
      * @param string $path
      * @return IDownload
      */
-    public static function makeDownloadFromPath(string $path);
+    public static function makeDownloadFromPath(string $path): IDownload;
 }

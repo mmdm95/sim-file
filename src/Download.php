@@ -19,12 +19,12 @@ class Download implements IDownload
     /**
      * @var string $name
      */
-    protected $name = null;
+    protected $name;
 
     /**
      * @var string $mime_type
      */
-    protected $mime_type = null;
+    protected $mime_type;
 
     /**
      * @var string $path
@@ -117,7 +117,7 @@ class Download implements IDownload
     /**
      * {@inheritdoc}
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -161,7 +161,7 @@ class Download implements IDownload
     /**
      * {@inheritdoc}
      */
-    public function getMimeType(): ?string
+    public function getMimeType(): string
     {
         return $this->mime_type;
     }
@@ -186,7 +186,7 @@ class Download implements IDownload
      * {@inheritdoc}
      * @throws DownloadException
      */
-    public static function makeDownloadFromPath(string $path)
+    public static function makeDownloadFromPath(string $path): IDownload
     {
         return new Download($path);
     }
