@@ -667,5 +667,57 @@ See `getFiles` in normal way.
 
 See `getFilteredFiles` in normal way.
 
+### How to add more validations
+
+To add your validation, you must extend from `AbstractValidator` 
+from `Abstracts` directory and implement following method(s):
+
+#### `validate(FileUpload $file): bool`
+
+Main validation method that need a file of type `FileUpload`.
+
+### How translate validations error(s)
+
+To translate validations error(s) you need to use 
+`setMessage($key, $message)` method inside you class after 
+extending `AbstractValidator` and set your locally message to 
+specific error key.
+
+Key of errors in each class are:
+
+- ExtensionValidation
+
+```php
+[
+  'extension' => 'Specified extension is not allowed!'
+]
+```
+
+- MimeTypeValidation
+
+```php
+[
+  'mimetype' => 'Specified mimetype is not allowed!',
+]
+```
+
+- SizeValidation
+
+```php
+[
+  'gt_size' => 'File size is greater than allowed file size!',
+  'lt_size' => 'File size is less than allowed file size!',
+]
+```
+
+### How to add more filters
+
+To add your filter, you must implement `IFilter` interface from 
+`Interfaces` directory and implement following method(s):
+
+#### `filter(SplFileInfo $file): bool`
+
+Main filter method that need a file of type `SplFileInfo`.
+
 # License
 Under MIT license.
