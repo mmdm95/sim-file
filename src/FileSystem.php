@@ -452,7 +452,7 @@ class FileSystem implements IFileSystem
     {
         $filename = PathUtil::getAbsolutePath($filename, false);
         if (!is_file($filename)) return false;
-        return posix_getpwuid(self::getFileOwnerID($filename))['name'];
+        return function_exists('posix_getpwuid') ? (self::getFileOwnerID($filename))['name'] : false;
     }
 
     /**
@@ -488,7 +488,7 @@ class FileSystem implements IFileSystem
     {
         $filename = PathUtil::getAbsolutePath($filename, false);
         if (!is_file($filename)) return false;
-        return posix_getpwuid(self::getFileGroupID($filename))['name'];
+        return function_exists('posix_getpwuid') ? posix_getpwuid(self::getFileGroupID($filename))['name'] : false;
     }
 
     /**
