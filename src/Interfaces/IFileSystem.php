@@ -313,6 +313,9 @@ interface IFileSystem
     public function getOwner();
 
     /**
+     * It uses <em>posix_getpwuid</em> function, if
+     * that function exists.
+     *
      * @param string $filename
      * @return string|false
      */
@@ -335,6 +338,9 @@ interface IFileSystem
     public function getGroup();
 
     /**
+     * It uses <em>posix_getpwuid</em> function, if
+     * that function exists.
+     *
      * @param string $filename
      * @return string|false
      */
