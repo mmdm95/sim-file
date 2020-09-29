@@ -507,6 +507,16 @@ through constants below:
 $typeFilter = new TypeFilter(IFileSystem::TYPE_FILE | IFileSystem::TYPE_DIRECTORY);
 ```
 
+- RegexFilter
+
+You should pass a regex to filter a file and it'll apply on name 
+and extension
+
+```php
+// new regex filterer instance
+$regexFilter = new RegexFilter('/es\.(png|jpe?g|gif)$/i');
+```
+
 #### `getFiles(int $type = self::TYPE_FILE | self::TYPE_DIRECTORY): array`
 
 Get files of a specific directory as array of type `SplFileInfo`.
