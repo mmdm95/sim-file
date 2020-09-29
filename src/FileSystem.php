@@ -743,6 +743,7 @@ class FileSystem implements IFileSystem
                 //----- Check validations
                 $isValid = true;
                 foreach ($filters as $filter) {
+                    if(!$isValid) break;
                     if ($filter instanceof IFilter) {
                         $isValid = $isValid && $filter->filter($file);
                     }
@@ -801,6 +802,7 @@ class FileSystem implements IFileSystem
             //----- Check validations
             $isValid = true;
             foreach ($filters as $filter) {
+                if(!$isValid) break;
                 if ($filter instanceof IFilter) {
                     $isValid = $isValid && $filter->filter($splFI);
                 }
