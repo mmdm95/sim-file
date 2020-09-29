@@ -15,7 +15,9 @@ then put file to your project library and use it like other libraries.
 It has three parts to use:
 
 - Download
+
 - Upload
+
 - FileSystem
 
 ### Download
@@ -108,32 +110,7 @@ $fileUpload = new FileUpload($the_key_of_file_in_file_global_variable);
 You can pass some validations to validate a file while upload 
 method called.
 
-Validations are as below for now:
-
-- ExtensionValidation
-
-```php
-// new extension validation instance
-// pass array of allowed extensions without dot
-$extValidation = new ExtensionValidation(['png', 'jpg', 'jpeg']);
-```
-
-- MimeTypeValidation
-
-```php
-// new mimetype validation instance
-// pass array of allowed mimetypes
-$mimetypeValidation = new MimeTypeValidation(['image/png', 'image/jpg']);
-```
-
-- SizeValidation
-
-You should pass max size as first parameter and 
-min size as second parameter
-
-Passed parameters can be in following format:
-
-size of file with one of ['B', 'KB', 'MB', 'TB', 'PB']
+Please refer to *Validations* section at the very bottom
 
 **Note:** If unit is not specified, it'll be in bytes.
 
@@ -167,7 +144,7 @@ Get original name of uploaded file with extension.
 Get errors of uploaded file. Basically it is standard error 
 of uploaded file error and can have other errors too.
 
-**Note:** Validation errors is not included here.
+**Note:** Validation errors are not included here.
 
 #### `addError(string $error)`
 
@@ -297,10 +274,24 @@ parameter if want to overwrite the existence file.
 Rename a file with new name. Use *true* as `$overwrite` 
 parameter if want to overwrite the existence file.
 
-#### `delete(bool $recursive = true): bool`
+#### `delete(): bool`
 
-Do delete operation. Use *true* as `$recursive` parameter if want 
-to delete a directory recursively.
+Do delete operation.
+
+**Note:** It will delete folders recursively.
+
+#### `deleteFilteredFiles(array $filters = []): bool`
+
+Do delete operation on filtered files.
+
+**Note:** Only delete files in first level of a directory (This means 
+no recursion)
+
+#### `deleteAllFilteredFiles(array $filters = []): bool`
+
+Do delete operation on filtered files.
+
+**Note:** It will delete folders recursively.
 
 #### `chmod(string $mode): bool`
 
@@ -446,76 +437,7 @@ depth of `$depth`.
 **Note:** If you want a file's files, it'll use directory of that 
 file as needed directory to get files from.
 
-Filters are similar to `Validations` from upload section.
-
-Filter classes are:
-
-- ExtensionFilter
-
-```php
-// new extension filterer instance
-// pass array of allowed extensions without dot
-$extFilter = new ExtensionFilter(['png', 'jpg', 'jpeg']);
-```
-
-- MimeTypeFilter
-
-```php
-// new mimetype filterer instance
-// pass array of allowed mimetypes
-$mimetypeFilter = new MimeTypeFilter(['image/png', 'image/jpg']);
-```
-
-- NameFilter
-
-You should pass a regex according to name of file you need 
-without extension to constructor.
-
-```php
-// new name filterer instance
-// files that name of them ends with 'es'
-$nameFilter = new NameFilter('/es$/i');
-```
-
-- SizeFilter
-
-You should pass max size as first parameter and 
-min size as second parameter
-
-Passed parameters can be in following format:
-
-size of file with one of ['B', 'KB', 'MB', 'TB', 'PB']
-
-**Note:** If unit is not specified, it'll be in bytes.
-
-```php
-// new size filterer instance
-$sizeFilter = new SizeFilter('2MB', '1MB');
-```
-
-- TypeFilter
-
-There are two types: *file* and *directory* that can specify 
-through constants below:
-
-- IFileSystem::TYPE_FILE
-
-- IFileSystem::TYPE_DIRECTORY
-
-```php
-// new type filterer instance
-$typeFilter = new TypeFilter(IFileSystem::TYPE_FILE | IFileSystem::TYPE_DIRECTORY);
-```
-
-- RegexFilter
-
-You should pass a regex to filter a file and it'll apply on name 
-and extension
-
-```php
-// new regex filterer instance
-$regexFilter = new RegexFilter('/es\.(png|jpe?g|gif)$/i');
-```
+Please refer to *Filters* section at the very bottom.
 
 #### `getFiles(int $type = self::TYPE_FILE | self::TYPE_DIRECTORY): array`
 
@@ -531,12 +453,14 @@ file as needed directory to get files from.
 Get filtered files of a specific directory as array of 
 type `SplFileInfo`.
 
-Filters are like the filters that have been explained above.
+Please refer to *Filters* section at the very bottom.
 
 **Note:** This method is only for directories.
 
 **Note:** If you want a file's files, it'll use directory of that 
 file as needed directory to get files from.
+
+---
 
 ## Static calling way methods:
 
@@ -591,9 +515,17 @@ See `move` in normal way.
 
 See `rename` in normal way.
 
-#### `deleteFile(string $filename, bool $recursive = true): bool`
+#### `deleteFile(string $filename): bool`
 
 See `delete` in normal way.
+
+#### `deleteDirFilteredFiles(string $filename, array $filters = []): bool`
+
+See `deleteFilteredFiles` in normal way.
+
+#### `deleteDirAllFilteredFiles(string $filename, array $filters = []): bool`
+
+See `deleteAllFilteredFiles` in normal way.
 
 #### `fileChmod(string $filename, string $mode): bool`
 
@@ -679,6 +611,8 @@ See `getFiles` in normal way.
 
 See `getFilteredFiles` in normal way.
 
+# How To
+
 ### How to add more validations
 
 To add your validation, you must extend from `AbstractValidator` 
@@ -730,6 +664,106 @@ To add your filter, you must implement `IFilter` interface from
 #### `filter(SplFileInfo $file): bool`
 
 Main filter method that need a file of type `SplFileInfo`.
+
+# Filters
+
+Filter classes are:
+
+- ExtensionFilter
+
+```php
+// new extension filterer instance
+// pass array of allowed extensions without dot
+$extFilter = new ExtensionFilter(['png', 'jpg', 'jpeg']);
+```
+
+- MimeTypeFilter
+
+```php
+// new mimetype filterer instance
+// pass array of allowed mimetypes
+$mimetypeFilter = new MimeTypeFilter(['image/png', 'image/jpg']);
+```
+
+- NameFilter
+
+You should pass a regex according to name of file you need 
+without extension to constructor.
+
+```php
+// new name filterer instance
+// files that name of them ends with 'es'
+$nameFilter = new NameFilter('/es$/i');
+```
+
+- SizeFilter
+
+You should pass max size as first parameter and 
+min size as second parameter
+
+Passed parameters can be in following format:
+
+size of file with one of ['B', 'KB', 'MB', 'TB', 'PB']
+
+**Note:** If unit is not specified, it'll be in bytes.
+
+```php
+// new size filterer instance
+$sizeFilter = new SizeFilter('2MB', '1MB');
+```
+
+- TypeFilter
+
+There are two types: *file* and *directory* that can specify 
+through constants below:
+
+- IFileSystem::TYPE_FILE
+
+- IFileSystem::TYPE_DIRECTORY
+
+```php
+// new type filterer instance
+$typeFilter = new TypeFilter(IFileSystem::TYPE_FILE | IFileSystem::TYPE_DIRECTORY);
+```
+
+- RegexFilter
+
+You should pass a regex to filter a file and it'll apply on name 
+and extension
+
+```php
+// new regex filterer instance
+$regexFilter = new RegexFilter('/es\.(png|jpe?g|gif)$/i');
+```
+
+# Validation
+
+Validations are as below for now:
+
+- ExtensionValidation
+
+```php
+// new extension validation instance
+// pass array of allowed extensions without dot
+$extValidation = new ExtensionValidation(['png', 'jpg', 'jpeg']);
+```
+
+- MimeTypeValidation
+
+```php
+// new mimetype validation instance
+// pass array of allowed mimetypes
+$mimetypeValidation = new MimeTypeValidation(['image/png', 'image/jpg']);
+```
+
+- SizeValidation
+
+You should pass max size as first parameter and 
+min size as second parameter
+
+Passed parameters can be in following format:
+
+size of file with one of ['B', 'KB', 'MB', 'TB', 'PB']
 
 # License
 Under MIT license.
