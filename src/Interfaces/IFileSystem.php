@@ -204,17 +204,45 @@ interface IFileSystem
     public static function renameFile(string $old_name, string $new_name, bool $overwrite = false): bool;
 
     /**
-     * @param bool $recursive
      * @return bool
      */
-    public function delete(bool $recursive = true): bool;
+    public function delete(): bool;
 
     /**
      * @param string $filename
-     * @param bool $recursive
      * @return bool
      */
-    public static function deleteFile(string $filename, bool $recursive = true): bool;
+    public static function deleteFile(string $filename): bool;
+
+    /**
+     * Only delete files in first level of a directory
+     *
+     * @param array $filters
+     * @return bool
+     */
+    public function deleteFilteredFiles(array $filters = []): bool;
+
+    /**
+     * Only delete files in first level of a directory
+     *
+     * @param string $filename
+     * @param array $filters
+     * @return bool
+     */
+    public static function deleteDirFilteredFiles(string $filename, array $filters = []): bool;
+
+    /**
+     * @param array $filters
+     * @return bool
+     */
+    public function deleteAllFilteredFiles(array $filters = []): bool;
+
+    /**
+     * @param string $filename
+     * @param array $filters
+     * @return bool
+     */
+    public static function deleteDirAllFilteredFiles(string $filename, array $filters = []): bool;
 
     /**
      * @param string $mode

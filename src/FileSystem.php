@@ -286,7 +286,7 @@ class FileSystem implements IFileSystem
     /**
      * {@inheritdoc}
      */
-    public function delete(bool $recursive = true): bool
+    public function delete(): bool
     {
         return self::deleteFile($this->filename);
     }
@@ -295,7 +295,7 @@ class FileSystem implements IFileSystem
      * @see https://stackoverflow.com/questions/3349753/delete-directory-with-files-in-it - for directory deletion
      * {@inheritdoc}
      */
-    public static function deleteFile(string $filename, bool $recursive = true): bool
+    public static function deleteFile(string $filename): bool
     {
         $filename = PathUtil::getAbsolutePath($filename, false);
         if (is_file($filename)) {
@@ -316,6 +316,82 @@ class FileSystem implements IFileSystem
         }
 
         return !self::fileExists($filename);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteFilteredFiles(array $filters = []): bool
+    {
+        return self::deleteDirFilteredFiles($this->filename, $filters);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function deleteDirFilteredFiles(string $filename, array $filters = []): bool
+    {
+        $filters = array_filter($filters, function ($value) {
+            return !$value instanceof TypeFilter;
+        });
+        $files = self::getDirFilteredFiles($filename, array_merge($filters, [new TypeFilter(self::TYPE_FILE)]));
+
+        /**
+         * @var \SplFileInfo $file
+         */
+        foreach ($files as $file) {
+            unlink($file->getRealPath());
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteAllFilteredFiles(array $filters = []): bool
+    {
+        return self::deleteDirAllFilteredFiles($this->filename, $filters);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function deleteDirAllFilteredFiles(string $filename, array $filters = []): bool
+    {
+        $filename = PathUtil::getAbsolutePath($filename, false);
+        if (is_file($filename)) {
+            self::deleteFile($filename);
+        } elseif (is_dir($filename)) {
+            $it = new RecursiveDirectoryIterator($filename, RecursiveDirectoryIterator::SKIP_DOTS);
+            $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
+
+            /**
+             * @var \SplFileInfo $file
+             */
+            foreach ($files as $file) {
+                //----- Check filters
+                $isValid = true;
+                foreach ($filters as $filter) {
+                    if (!$isValid) break;
+                    if ($filter instanceof IFilter) {
+                        $isValid = $isValid && $filter->filter($file);
+                    }
+                }
+                //-----
+
+                if ($isValid) {
+                    if ($file->isDir()) {
+                        rmdir($file->getRealPath());
+                    } else {
+                        unlink($file->getRealPath());
+                    }
+                }
+            }
+            rmdir($filename);
+        }
+
+        return true;
     }
 
     /**
@@ -740,10 +816,10 @@ class FileSystem implements IFileSystem
                  */
                 $file = $allFiles->current();
 
-                //----- Check validations
+                //----- Check filters
                 $isValid = true;
                 foreach ($filters as $filter) {
-                    if(!$isValid) break;
+                    if (!$isValid) break;
                     if ($filter instanceof IFilter) {
                         $isValid = $isValid && $filter->filter($file);
                     }
@@ -799,10 +875,10 @@ class FileSystem implements IFileSystem
         foreach ($files as $file) {
             $splFI = new \SplFileInfo($dir . '/' . $file);
 
-            //----- Check validations
+            //----- Check filters
             $isValid = true;
             foreach ($filters as $filter) {
-                if(!$isValid) break;
+                if (!$isValid) break;
                 if ($filter instanceof IFilter) {
                     $isValid = $isValid && $filter->filter($splFI);
                 }
