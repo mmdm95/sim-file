@@ -65,6 +65,28 @@ interface IFileSystem
     public static function isFileWritable(string $filename): bool;
 
     /**
+     * @return bool
+     */
+    public function isFile(): bool;
+
+    /**
+     * @param string $filename
+     * @return bool
+     */
+    public static function isItFile(string $filename): bool;
+
+    /**
+     * @return bool
+     */
+    public function isDir(): bool;
+
+    /**
+     * @param string $filename
+     * @return bool
+     */
+    public static function isItDir(string $filename): bool;
+
+    /**
      * Works only on directories
      *
      * @return bool

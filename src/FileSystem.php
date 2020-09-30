@@ -81,6 +81,38 @@ class FileSystem implements IFileSystem
     /**
      * {@inheritdoc}
      */
+    public function isFile(): bool
+    {
+        return self::isItFile($this->filename);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function isItFile(string $filename): bool
+    {
+        return is_file($filename);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDir(): bool
+    {
+        return self::isItDir($this->filename);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function isItDir(string $filename): bool
+    {
+        return is_dir($filename);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isEmpty(): bool
     {
         return self::isDirEmpty($this->filename);
@@ -92,7 +124,7 @@ class FileSystem implements IFileSystem
      */
     public static function isDirEmpty(string $dir): bool
     {
-        if(!self::fileExists($dir) || !self::isFileReadable($dir)) return false;
+        if (!self::fileExists($dir) || !self::isFileReadable($dir)) return false;
         $dir = is_file($dir) ? dirname($dir) : $dir;
 
         $handle = opendir($dir);
@@ -338,7 +370,7 @@ class FileSystem implements IFileSystem
                     @unlink($file->getRealPath());
                 }
             }
-            if(self::isDirEmpty($filename)) {
+            if (self::isDirEmpty($filename)) {
                 @rmdir($filename);
             }
         }
@@ -415,7 +447,7 @@ class FileSystem implements IFileSystem
                     }
                 }
             }
-            if(self::isDirEmpty($filename)) {
+            if (self::isDirEmpty($filename)) {
                 @rmdir($filename);
             }
         }
