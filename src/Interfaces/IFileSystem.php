@@ -65,6 +65,21 @@ interface IFileSystem
     public static function isFileWritable(string $filename): bool;
 
     /**
+     * Works only on directories
+     *
+     * @return bool
+     */
+    public function isEmpty(): bool;
+
+    /**
+     * Works only on directories
+     *
+     * @param $dir
+     * @return bool
+     */
+    public static function isDirEmpty($dir): bool;
+
+    /**
      * @param null $prefer
      * @return string
      */
@@ -215,6 +230,8 @@ interface IFileSystem
     public static function deleteFile(string $filename): bool;
 
     /**
+     * Works only on directories
+     *
      * Only delete files in first level of a directory
      *
      * @param array $filters
@@ -223,6 +240,8 @@ interface IFileSystem
     public function deleteFilteredFiles(array $filters = []): bool;
 
     /**
+     * Works only on directories
+     *
      * Only delete files in first level of a directory
      *
      * @param string $filename
@@ -232,12 +251,16 @@ interface IFileSystem
     public static function deleteDirFilteredFiles(string $filename, array $filters = []): bool;
 
     /**
+     * Works only on directories
+     *
      * @param array $filters
      * @return bool
      */
     public function deleteAllFilteredFiles(array $filters = []): bool;
 
     /**
+     * Works only on directories
+     *
      * @param string $filename
      * @param array $filters
      * @return bool

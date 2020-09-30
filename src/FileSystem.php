@@ -81,6 +81,34 @@ class FileSystem implements IFileSystem
     /**
      * {@inheritdoc}
      */
+    public function isEmpty(): bool
+    {
+        return self::isDirEmpty($this->filename);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @see https://stackoverflow.com/a/7497848/12154893
+     */
+    public static function isDirEmpty($dir): bool
+    {
+        if(!self::fileExists($dir) || !self::isFileReadable($dir)) return false;
+        $dir = is_file($dir) ? dirname($dir) : $dir;
+
+        $handle = opendir($dir);
+        while (false !== ($entry = readdir($handle))) {
+            if ($entry != "." && $entry != "..") {
+                closedir($handle);
+                return false;
+            }
+        }
+        closedir($handle);
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function get($prefer = null): string
     {
         return self::getFromFile($this->filename, $prefer);
@@ -187,7 +215,7 @@ class FileSystem implements IFileSystem
     {
         $filename = PathUtil::getAbsolutePath($filename, false);
         try {
-            $handle = fopen($filename, "r+");
+            $handle = @fopen($filename, "r+");
             $len = strlen($data);
             $final_len = self::getFileSize($filename) + $len;
             $cache_old = fread($handle, $len);
@@ -299,20 +327,20 @@ class FileSystem implements IFileSystem
     {
         $filename = PathUtil::getAbsolutePath($filename, false);
         if (is_file($filename)) {
-            if (is_file($filename)) {
-                @unlink($filename);
-            }
+            @unlink($filename);
         } elseif (is_dir($filename)) {
             $it = new RecursiveDirectoryIterator($filename, RecursiveDirectoryIterator::SKIP_DOTS);
             $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
             foreach ($files as $file) {
                 if ($file->isDir()) {
-                    rmdir($file->getRealPath());
+                    @rmdir($file->getRealPath());
                 } else {
-                    unlink($file->getRealPath());
+                    @unlink($file->getRealPath());
                 }
             }
-            rmdir($filename);
+            if(self::isDirEmpty($filename)) {
+                @rmdir($filename);
+            }
         }
 
         return !self::fileExists($filename);
@@ -340,7 +368,7 @@ class FileSystem implements IFileSystem
          * @var \SplFileInfo $file
          */
         foreach ($files as $file) {
-            unlink($file->getRealPath());
+            @unlink($file->getRealPath());
         }
 
         return true;
@@ -360,9 +388,8 @@ class FileSystem implements IFileSystem
     public static function deleteDirAllFilteredFiles(string $filename, array $filters = []): bool
     {
         $filename = PathUtil::getAbsolutePath($filename, false);
-        if (is_file($filename)) {
-            self::deleteFile($filename);
-        } elseif (is_dir($filename)) {
+        $filename = is_file($filename) ? dirname($filename) : $filename;
+        if (is_dir($filename)) {
             $it = new RecursiveDirectoryIterator($filename, RecursiveDirectoryIterator::SKIP_DOTS);
             $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
 
@@ -382,13 +409,15 @@ class FileSystem implements IFileSystem
 
                 if ($isValid) {
                     if ($file->isDir()) {
-                        rmdir($file->getRealPath());
+                        @rmdir($file->getRealPath());
                     } else {
-                        unlink($file->getRealPath());
+                        @unlink($file->getRealPath());
                     }
                 }
             }
-            rmdir($filename);
+            if(self::isDirEmpty($filename)) {
+                @rmdir($filename);
+            }
         }
 
         return true;
