@@ -90,7 +90,7 @@ class FileSystem implements IFileSystem
      * @see https://stackoverflow.com/a/7497848/12154893
      * {@inheritdoc}
      */
-    public static function isDirEmpty($dir): bool
+    public static function isDirEmpty(string $dir): bool
     {
         if(!self::fileExists($dir) || !self::isFileReadable($dir)) return false;
         $dir = is_file($dir) ? dirname($dir) : $dir;
