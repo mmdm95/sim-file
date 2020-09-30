@@ -74,10 +74,10 @@ interface IFileSystem
     /**
      * Works only on directories
      *
-     * @param $dir
+     * @param string $dir
      * @return bool
      */
-    public static function isDirEmpty($dir): bool;
+    public static function isDirEmpty(string $dir): bool;
 
     /**
      * @param null $prefer
