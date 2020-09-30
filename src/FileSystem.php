@@ -87,8 +87,8 @@ class FileSystem implements IFileSystem
     }
 
     /**
-     * {@inheritdoc}
      * @see https://stackoverflow.com/a/7497848/12154893
+     * {@inheritdoc}
      */
     public static function isDirEmpty($dir): bool
     {
