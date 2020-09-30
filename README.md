@@ -233,6 +233,13 @@ Check if specified file is readable.
 
 Check if specified file is writable.
 
+#### `isEmpty(): bool`
+
+Check if a directory is empty or not.
+
+**Note:** If you use file instead of directory, it'll use directory of 
+that file to check.
+
 #### `get($prefer = null): string`
 
 Get all contents of a file as string
@@ -478,6 +485,10 @@ See `isReadable` in normal way.
 #### `isFileWritable(string $filename): bool`
 
 See `isWritable` in normal way.
+
+#### `isDirEmpty(string $dir): bool`
+
+See `isEmpty` in normal way.
 
 #### `getFromFile(string $filename, $prefer = null): string`
 
