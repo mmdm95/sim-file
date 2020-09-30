@@ -233,6 +233,14 @@ Check if specified file is readable.
 
 Check if specified file is writable.
 
+#### `isFile(): bool`
+
+Check if a path is file
+
+#### `isDir(): bool`
+
+Check if a path is directory
+
 #### `isEmpty(): bool`
 
 Check if a directory is empty or not.
@@ -485,6 +493,14 @@ See `isReadable` in normal way.
 #### `isFileWritable(string $filename): bool`
 
 See `isWritable` in normal way.
+
+#### `isItFile(string $filename): bool`
+
+See `isFile` in normal way.
+
+#### `isItDir(string $filename): bool`
+
+See `isDir` in normal way.
 
 #### `isDirEmpty(string $dir): bool`
 
