@@ -73,6 +73,8 @@ class Download implements IDownload
     {
         $path = $this->getPath();
 
+        if(!empty($name)) $this->setName($name);
+
         // check if headers not sent yet
         if (headers_sent()) {
             throw new RuntimeException("Headers were already sent!");
@@ -111,7 +113,7 @@ class Download implements IDownload
      */
     public function setName(string $name)
     {
-
+        $this->name = $name;
         return $this;
     }
 
