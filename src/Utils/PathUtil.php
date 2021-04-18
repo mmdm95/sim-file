@@ -15,7 +15,7 @@ class PathUtil
         // Cleaning path regarding OS
         $path = mb_ereg_replace('\\\\|/', DIRECTORY_SEPARATOR, $path, 'msr');
         // Check if path start with a separator (UNIX)
-        $startWithSeparator = $path[0] === DIRECTORY_SEPARATOR;
+        $startWithSeparator = $path ? $path[0] === DIRECTORY_SEPARATOR : false;
         // Check if start with drive letter
         preg_match('/^[a-z]:/', $path, $matches);
         $startWithLetterDir = isset($matches[0]) ? $matches[0] : false;
