@@ -95,9 +95,13 @@ class Download implements IDownload
         header('Content-Transfer-Encoding: binary');
         header('Content-Length: ' . $this->getSize());
 
-        ob_clean();
-        flush();
-        readfile($path);
+        $fp = fopen($path, 'rb');
+
+        @ob_clean();
+
+        rewind($fp);
+        fpassthru($fp);
+        exit;
     }
 
     /**
